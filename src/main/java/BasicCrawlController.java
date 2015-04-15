@@ -1,5 +1,10 @@
 package main.java;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,29 +17,48 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 public class BasicCrawlController {
 	private static Logger logger = LoggerFactory
 			.getLogger(BasicCrawlController.class);
-	public static final ISites site = new chuanke();
+	public static final ISites site = new osforceSite();
+	public static int rowCount = 0;
 //	public static final ISites site = new osforceSite();
-
+	public static PrintWriter pw = null;
+	
+	public static FileWriter fw = null;
+	
+	public synchronized static void    writeDate(String line)
+	{
+		pw.println(line);
+		pw.flush();
+	}
 	public static void main(String[] args) throws Exception {
-		// if (args.length != 2) {
-		// logger.info("Needed parameters: ");
-		// logger.info("\t rootFolder (it will contain intermediate crawl data)");
-		// logger.info("\t numberOfCralwers (number of concurrent threads)");
-		// return;
-		// }
+
 
 		/*
 		 * crawlStorageFolder is a folder where intermediate crawl data is
 		 * stored.
 		 */
-
+		File oldFile = new File(BasicCrawlController.site.outputFileName());
+		if(oldFile.exists())
+		{
+			oldFile.delete();
+		}
+		try {
+			
+			BasicCrawlController.fw = new FileWriter(BasicCrawlController.site.outputFileName());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(BasicCrawlController.fw!=null)
+		{
+			BasicCrawlController.pw = new PrintWriter(fw);
+		}
 		String crawlStorageFolder = "./tmp";
-
+		
 		/*
 		 * numberOfCrawlers shows the number of concurrent threads that should
 		 * be initiated for crawling.
 		 */
-		int numberOfCrawlers = Integer.parseInt("3");
+		int numberOfCrawlers = BasicCrawlController.site.crawlerCount();
 
 		CrawlConfig config = new CrawlConfig();
 

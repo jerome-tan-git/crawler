@@ -132,6 +132,11 @@ public class osforceSite implements ISites {
 		return SESSION.matcher(url).matches();
 	}
 
+	public int crawlerCount() {
+		// TODO Auto-generated method stub
+		return 3;
+	}
+
 
 
 }

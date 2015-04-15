@@ -11,4 +11,5 @@ public interface ISites {
 	public String[] getFields(Document doc, Page page);
 	public int getCrawlDepth();
 	public boolean isParseURL(String url);
+	public int crawlerCount();
 }

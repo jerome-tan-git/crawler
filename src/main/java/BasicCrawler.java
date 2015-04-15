@@ -1,6 +1,9 @@
 package main.java;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -24,16 +27,11 @@ public class BasicCrawler extends WebCrawler {
 					+ "|avi|mov|mpe?g|ra?m|m4v|smil|wm?v|swf|aaf|asf|flv|mkv"
 					+ "|zip|rar|gz|7z|aac|ace|alz|apk|arc|arj|dmg|jar|lzip|lha)"
 					+ "(\\?.*)?$"); // For url Query parts ( URL?q=... )
-//	private final static Pattern SESSION = Pattern
-//			.compile("http://www.osforce.cn/course/[\\d]+"); // For url Query
-																// parts (
-																// URL?q=... )
-//	private ISites siteConfig=new osforceSite();
-	CsvWriter csvWriter = new CsvWriter(BasicCrawlController.site.outputFileName(), ',',
-			Charset.forName("UTF-8"));
-//	public BasicCrawler(ISites _siteConfig) {
-//		this.siteConfig = _siteConfig;
-//	}
+
+
+	public BasicCrawler() {
+		
+	}
 
 	/**
 	 * You should implement this function to specify whether the given url
@@ -63,20 +61,16 @@ public class BasicCrawler extends WebCrawler {
 				String text = htmlParseData.getHtml();
 				Document doc = Jsoup.parse(text);
 				String[] fields = BasicCrawlController.site.getFields(doc, page);
-
+				String line = "";
+				
 				for(String str : fields)
 				{
-					System.out.print(str+ " , ");
+					
+					line +=str+ "\t";
 				}
-				System.out.println("");
-				try {
-					csvWriter.writeRecord(fields);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				csvWriter.flush();
 				
+				System.out.print((BasicCrawlController.rowCount++) + " : " + line);
+				BasicCrawlController.writeDate(line);
 			}
 		}
 		// int docid = page.getWebURL().getDocid();

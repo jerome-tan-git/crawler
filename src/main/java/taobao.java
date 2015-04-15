@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 
-public class chuanke implements ISites {
+public class taobao implements ISites {
 
 	private final static Pattern SESSION = Pattern
 			.compile("http://www.chuanke.com/[\\d]+\\-[\\d]+\\.html");
