@@ -1,4 +1,4 @@
-package com.person;
+package main.java.wangyi;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -19,7 +19,7 @@ public class GetWebInfoForAllPage {
 	private static Logger logger = Logger.getLogger(GetWebInfoForAllPage.class);
 private String urlPrex = "http://study.163.com";
   private String url = "http://study.163.com/find.htm#/find/courselist?ct=31001";
-  private String phantomJsPath = "D:\\phantomjs\\phantomjs.exe";
+  private String phantomJsPath = "c:\\phantomjs\\phantomjs.exe";
   private WebDriver driver = null;
   private BufferedWriter bWriter = null;
   
@@ -47,7 +47,7 @@ private String urlPrex = "http://study.163.com";
 
 //	    String pageSource = driver.getPageSource();
 //	    System.out.println(pageSource);
-	  bWriter = new BufferedWriter(new FileWriter("D:\\url.txt"));
+	  bWriter = new BufferedWriter(new FileWriter("./url.txt"));
 	  int successPageCnt = 0;
 	  for (int i = 1; i <= 50; i++) {
 		  if (i > 1) {

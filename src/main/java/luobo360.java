@@ -8,18 +8,18 @@ import org.jsoup.select.Elements;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 
-public class jikexueyuan implements ISites {
+public class luobo360 implements ISites {
 
 	private final static Pattern SESSION = Pattern.compile(
-			"http://www.jikexueyuan.com/course/[0-9]+.html",
+			"http://www.luobo360.com/course/[0-9]+",
 			Pattern.CASE_INSENSITIVE);
 
 	public String[] getURLSeed() {
 		// http://www.chuanke.com/course/72351163642544128______2.html?page=1
-		int pageLen = 28;// 27
+		int pageLen = 3;// 27
 		String[] pages = new String[pageLen];
 		for (int i = 1; i <= pageLen; i++) {
-			pages[i - 1] = "http://www.jikexueyuan.com/course/?pageNum="+i;
+			pages[i - 1] = "http://www.luobo360.com/course/search/index?firstLevel=all&categoryId=all&complexity=all&price=all&page="+i;
 		}
 		// TODO Auto-generated method stub
 		return pages;
@@ -27,7 +27,7 @@ public class jikexueyuan implements ISites {
 
 	public String outputFileName() {
 		// TODO Auto-generated method stub
-		return "./jikexueyuan.tsv";
+		return "./luobo360.tsv";
 	}
 
 	public boolean shouldVisit(String href) {
@@ -41,7 +41,7 @@ public class jikexueyuan implements ISites {
 				+ page.getWebURL().getParentUrl());
 		// String[] fields = new String[4];
 		ArrayList<String> infoArray = new ArrayList<String>();
-		Elements el = doc.select("h2");// title
+		Elements el = doc.select("div[class=title]");// title
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else {
@@ -50,15 +50,15 @@ public class jikexueyuan implements ISites {
 		//
 		//
 		//
-//		el = doc.select("span[class=goods_price]");// price
-//		if (el.size() > 0) {
-//			infoArray.add(el.get(0).text());
-//		} else 
+		el = doc.select("div[class=price]");// price
+		if (el.size() > 0) {
+			infoArray.add(el.get(0).text());
+		} else 
 		{
 			infoArray.add("no price");
 		}
 		//
-		el = doc.select("div[class=infor-text] strong");// teacher name
+		el = doc.select("div[class=teacher]");// teacher name
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else {
@@ -74,7 +74,7 @@ public class jikexueyuan implements ISites {
 			infoArray.add("no teacher rating");
 		}
 		//
-		el = doc.select("div[class=infor-text] p");// teacher desc
+		el = doc.select("div[class=teacher-content]");// teacher desc
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else 
@@ -82,26 +82,26 @@ public class jikexueyuan implements ISites {
 			infoArray.add("no teacher desc");
 		}
 		//
-		el = doc.select("div[class=crumbs]");// category path
-		if (el.size() > 0) {
-			infoArray.add(el.get(0).text());
-		} else
+//		el = doc.select("div[class=crumbs]");// category path
+//		if (el.size() > 0) {
+//			infoArray.add(el.get(0).text());
+//		} else
 		{
 			infoArray.add("no category path");
 		}
 		//
-//		el = doc.select("div[class=goods_grid] img");// picture
-//		if (el.size() > 0) {
-//			infoArray.add(el.get(0).attr("src"));
-//		} else 
+		el = doc.select("div[class=course_preview] img");// picture
+		if (el.size() > 0) {
+			infoArray.add(el.get(0).attr("src"));
+		} else 
 		{
 			infoArray.add("no picture");//picture is in parent page
 		}
 		//
-		el = doc.select("div[class=mar-l30]");// start date
-		if (el.size() > 0) {
-			infoArray.add(el.get(0).text().split("|")[0]);
-		} else 
+//		el = doc.select("div[class=mar-l30]");// start date
+//		if (el.size() > 0) {
+//			infoArray.add(el.get(0).text().split("|")[0]);
+//		} else 
 		{
 			infoArray.add("No start date");// start date
 		}
@@ -117,17 +117,17 @@ public class jikexueyuan implements ISites {
 			infoArray.add("no end date");
 		}
 		//
-		 el = doc.select("div[class=timebox]");//video length same
-		 if(el.size()>0)
-		 {
-		 infoArray.add(el.get(0).text());
-		 }
-		 else
+//		 el = doc.select("div[class=timebox]");//video length same
+//		 if(el.size()>0)
+//		 {
+//		 infoArray.add(el.get(0).text());
+//		 }
+//		 else
 		{
 			infoArray.add("no video length");
 		}
 		//
-		 el = doc.select("div[class=timebox]");//course hour
+		 el = doc.select("ul[class=course-data] li:eq(1)");//course hour
 		 if(el.size()>0)
 		 {
 		 infoArray.add(el.get(0).text());
@@ -182,12 +182,12 @@ public class jikexueyuan implements ISites {
 			infoArray.add("no type");
 		}
 		//
-//		 el = doc.select("ol:contains(人气指数)");//rate
-//		 if(el.size()>0)
-//		 {
-//		 infoArray.add(el.get(0).text());
-//		 }
-//		 else
+		 el = doc.select("span[class=hidden-sm hidden-xs]");//rate
+		 if(el.size()>0)
+		 {
+		 infoArray.add(el.get(0).text());
+		 }
+		 else
 		{
 			infoArray.add("no rate");
 		}
@@ -202,17 +202,17 @@ public class jikexueyuan implements ISites {
 			infoArray.add("no comments_count");
 		}
 		//
-//		 el = doc.select("div[class^=applyCon] em");//enrolled_count
-//		 if(el.size()>0)
-//		 {
-//		 infoArray.add(el.get(0).text());
-//		 }
-//		 else
+		 el = doc.select("div[class=panel-heading clearfix]:contains(学习过)");//enrolled_count
+		 if(el.size()>0)
+		 {
+		 infoArray.add(el.get(0).text());
+		 }
+		 else
 		{
 			infoArray.add("no enrolled_count");
 		}
 		// detailContentLeft
-		 el = doc.select("div[id=infor-content]");//desc 
+		 el = doc.select("div[id=course-content]");//desc 
 		 if(el.size()>0)
 		 {
 		 infoArray.add(el.get(0).text());
@@ -222,7 +222,7 @@ public class jikexueyuan implements ISites {
 		infoArray.add("no desc");// desc ajax by
 		}						
 
-		el = doc.select("div[class=lesson-box]");// outline
+		el = doc.select("ul[class=outline-thrid]");// outline
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} 

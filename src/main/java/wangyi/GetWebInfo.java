@@ -1,4 +1,4 @@
-package com.person;
+package main.java.wangyi;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +24,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class GetWebInfo {
 	private static Logger logger = Logger.getLogger(GetWebInfo.class);
-	private String phantomJsPath = "D:\\phantomjs\\phantomjs.exe";
+	private String phantomJsPath = "c:\\phantomjs\\phantomjs.exe";
 	private BufferedWriter bWriter = null;
 	private ConcurrentLinkedQueue<String> urlQueue = new ConcurrentLinkedQueue<String>();
 	private ConcurrentLinkedQueue<String> errUrlQueue = new ConcurrentLinkedQueue<String>();
@@ -42,7 +42,7 @@ public class GetWebInfo {
 
 		System.setProperty("phantomjs.binary.path", phantomJsPath);
 
-		BufferedReader bReader = new BufferedReader(new FileReader("D:\\url.txt"));
+		BufferedReader bReader = new BufferedReader(new FileReader("./url.txt"));
 		String url  = null;
 		int i = 0;
 		while ((url = bReader.readLine()) != null) {
@@ -73,7 +73,7 @@ public class GetWebInfo {
 		}
 		pool.shutdown();
 		
-		bWriter = new BufferedWriter(new FileWriter("D:\\result.tsv"));
+		bWriter = new BufferedWriter(new FileWriter("./result.tsv"));
 		for (String line:resultQueue) {
 			bWriter.write(line);
 			bWriter.newLine();

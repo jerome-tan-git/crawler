@@ -17,7 +17,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 public class BasicCrawlController {
 	private static Logger logger = LoggerFactory
 			.getLogger(BasicCrawlController.class);
-	public static final ISites site = new ibeifeng();
+	public static final ISites site = new tsingyuan();
 	public static int rowCount = 0;
 //	public static final ISites site = new osforceSite();
 	public static PrintWriter pw = null;
