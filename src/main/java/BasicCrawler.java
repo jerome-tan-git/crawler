@@ -40,7 +40,7 @@ public class BasicCrawler extends WebCrawler {
 	@Override
 	public boolean shouldVisit(Page page, WebURL url) {
 		String href = url.getURL().toLowerCase();
-//		System.out.println(href + " | " + BasicCrawlController.site.shouldVisit(href));
+		System.out.println(href + " | " + BasicCrawlController.site.shouldVisit(href));
 		return !BINARY_FILES_EXTENSIONS.matcher(href).matches()
 				&& BasicCrawlController.site.shouldVisit(href);// href.startsWith("http://www.osforce.cn/course");
 	}

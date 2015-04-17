@@ -8,18 +8,18 @@ import org.jsoup.select.Elements;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 
-public class chinahadoop implements ISites {
+public class ibeifeng implements ISites {
 
 	private final static Pattern SESSION = Pattern.compile(
-			"http://www\\.chinahadoop\\.cn/course/[0-9]+",
+			"http://www.ibeifeng.com/goods-[0-9]+.html",
 			Pattern.CASE_INSENSITIVE);
 
 	public String[] getURLSeed() {
 		// http://www.chuanke.com/course/72351163642544128______2.html?page=1
-		int pageLen = 12;// 12
+		int pageLen = 44;// 44
 		String[] pages = new String[pageLen];
 		for (int i = 1; i <= pageLen; i++) {
-			pages[i - 1] = "http://www.chinahadoop.cn/course/explore?page=" + i;
+			pages[i - 1] = "http://www.ibeifeng.com/category-0-b0-min0-max0-attr-"+i+"-orderno-desc.html";
 		}
 		// TODO Auto-generated method stub
 		return pages;
@@ -27,7 +27,7 @@ public class chinahadoop implements ISites {
 
 	public String outputFileName() {
 		// TODO Auto-generated method stub
-		return "./chinahadoop.tsv";
+		return "./ibeifeng.tsv";
 	}
 
 	public boolean shouldVisit(String href) {
@@ -41,7 +41,7 @@ public class chinahadoop implements ISites {
 				+ page.getWebURL().getParentUrl());
 		// String[] fields = new String[4];
 		ArrayList<String> infoArray = new ArrayList<String>();
-		Elements el = doc.select("h1[class=title]");// title
+		Elements el = doc.select("h1[class=goods_tag]");// title
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else {
@@ -50,14 +50,14 @@ public class chinahadoop implements ISites {
 		//
 		//
 		//
-		el = doc.select("span[class=price]");// price
+		el = doc.select("span[class=goods_price]");// price
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else {
 			infoArray.add("no price");
 		}
 		//
-		el = doc.select("div[class=nickname]");// teacher name
+		el = doc.select("ul[class=goods_tb_list clearfix] li:contains(课程讲师)");// teacher name
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).text());
 		} else {
@@ -65,7 +65,7 @@ public class chinahadoop implements ISites {
 		}
 		//
 		//
-//		el = doc.select("div[class=fenshu] span:eq(1)");// teacher_rating
+//		el = doc.select("span[class=renqi]");// teacher_rating
 //		if (el.size() > 0) {
 //			infoArray.add(el.get(0).text());
 //		} else 
@@ -73,22 +73,23 @@ public class chinahadoop implements ISites {
 			infoArray.add("no teacher rating");
 		}
 		//
-		el = doc.select("div[class=about]");// teacher desc
-		if (el.size() > 0) {
-			infoArray.add(el.get(0).text());
-		} else {
-			infoArray.add("no teacher desc");
-		}
-		//
-//		el = doc.select("div[class=breadCrumbs]");// category path
+//		el = doc.select("div[class=create-list]");// teacher desc
 //		if (el.size() > 0) {
 //			infoArray.add(el.get(0).text());
 //		} else 
 		{
+			infoArray.add("no teacher desc");
+		}
+		//
+		el = doc.select("div[class=locaction]");// category path
+		if (el.size() > 0) {
+			infoArray.add(el.get(0).text());
+		} else
+		{
 			infoArray.add("no category path");
 		}
 		//
-		el = doc.select("img[class=img-responsive]");// picture
+		el = doc.select("div[class=goods_grid] img");// picture
 		if (el.size() > 0) {
 			infoArray.add(el.get(0).attr("src"));
 		} else {
@@ -124,12 +125,12 @@ public class chinahadoop implements ISites {
 			infoArray.add("no video length");
 		}
 		//
-//		 el = doc.select("div[class=CourseImg] p");//course hour
-//		 if(el.size()>0)
-//		 {
-//		 infoArray.add(el.get(0).text());
-//		 }
-//		 else
+		 el = doc.select("ul[class=goods_tb_list clearfix] li:contains(课时数量)");//course hour
+		 if(el.size()>0)
+		 {
+		 infoArray.add(el.get(0).text());
+		 }
+		 else
 		{
 			infoArray.add("no course hour");
 		}
@@ -147,23 +148,23 @@ public class chinahadoop implements ISites {
 		//
 		infoArray.add("no 3rd platform");// no 3rd platform
 		//
-		 el = doc.select("div[class=nickname] a");//school url
-		 if(el.size()>0)
-		 {
-		 infoArray.add(el.get(0).attr("href"));
-		 }
-		 else
+//		 el = doc.select("div[class=tutor-name] a");//school url
+//		 if(el.size()>0)
+//		 {
+//		 infoArray.add(el.get(0).attr("href"));
+//		 }
+//		 else
 		{
 			infoArray.add("no school URL");
 		}
 		//
 		//
-		 el = doc.select("div[class=nickname] a");//school name
-		 if(el.size()>0)
-		 {
-		 infoArray.add(el.get(0).text());
-		 }
-		 else
+//		 el = doc.select("div[class=mbd] h3");//school name
+//		 if(el.size()>0)
+//		 {
+//		 infoArray.add(el.get(0).text());
+//		 }
+//		 else
 		{
 			infoArray.add("no school name");
 		}
@@ -179,12 +180,12 @@ public class chinahadoop implements ISites {
 			infoArray.add("no type");
 		}
 		//
-		 el = doc.select("span[class=stat-item] span[class^=stars-]");//rate
-		 if(el.size()>0)
-		 {
-		 infoArray.add(el.get(0).attr("class"));
-		 }
-		 else
+//		 el = doc.select("ol:contains(人气指数)");//rate
+//		 if(el.size()>0)
+//		 {
+//		 infoArray.add(el.get(0).text());
+//		 }
+//		 else
 		{
 			infoArray.add("no rate");
 		}
@@ -199,17 +200,17 @@ public class chinahadoop implements ISites {
 			infoArray.add("no comments_count");
 		}
 		//
-		 el = doc.select("ul[class=user-grids] li");//enrolled_count
-		 if(el.size()>0)
-		 {
-		 infoArray.add(el.size()+"");
-		 }
-		 else
+//		 el = doc.select("div[class^=applyCon] em");//enrolled_count
+//		 if(el.size()>0)
+//		 {
+//		 infoArray.add(el.get(0).text());
+//		 }
+//		 else
 		{
 			infoArray.add("no enrolled_count");
 		}
 		// detailContentLeft
-		 el = doc.select("div[id=course-about-pane]");//desc
+		 el = doc.select("div[id=goods_box1]");//desc with outline
 		 if(el.size()>0)
 		 {
 		 infoArray.add(el.get(0).text());
@@ -219,11 +220,11 @@ public class chinahadoop implements ISites {
 		infoArray.add("no desc");// desc ajax by
 		}						
 
-		el = doc.select("div[id=course-list-pane]");// outline
-		if (el.size() > 0) {
-			infoArray.add(el.get(0).text());
-		} 
-		else 
+//		el = doc.select("div[class=kc-ml-con]");// outline
+//		if (el.size() > 0) {
+//			infoArray.add(el.get(0).text());
+//		} 
+//		else 
 		{
 			infoArray.add("no outline");
 		}
